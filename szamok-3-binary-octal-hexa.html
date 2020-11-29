@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        'use srtict';
+
+        // Írj egy függvényt, ami a paraméterként megadott tízes számrendszerbeli számot átkonvertálja 
+        // kettes, nyolcas, és tizenhatos számrendszerbe is! Ezeket az értékeket pedig egy objectbe adja vissza! 
+        // A property-k neve legyen: binary, octal, hexa.
+
+
+
+        const number = 31;
+        const letterArray = 'ABCDEF';
+
+        const hexaLetter = (value) => {
+            let num16;
+            if (value > 9) {
+                num16 = letterArray.slice(value - 10, value - 9);
+            } else {
+                num16 = value;
+            }
+            return num16;
+        };
+
+        const convert = (decimal, numberSystem) => {
+            let convertedValue;
+            if (numberSystem == 2) {
+                convertedValue = 0b0;
+            } else if (numberSystem === 8) {
+                convertedValue = 0o0;
+            } else {
+                convertedValue = 0x0;
+            };
+
+            let placeValue = 1;
+            let value = decimal;
+
+            const letter = hexaLetter(value % numberSystem)
+
+            while (value != 0) {
+                if (numberSystem === 16) {
+                    convertedValue = `${value % numberSystem}${letter}`;
+                } else {
+                    convertedValue += (value % numberSystem) * placeValue;
+                }
+                value = Math.trunc(value / numberSystem);
+                placeValue = placeValue * 10;
+            };
+            return (convertedValue);
+        }
+
+        const objectOfBinOctaHexa = {
+            binary: convert(number, 2),
+            octal: convert(number, 8),
+            hexa: convert(number, 16)
+        };
+
+        console.log(objectOfBinOctaHexa);
+    
+
+        // string
+
+
+        const convertStr = (decimal, numberSystem) => {
+            let convertedValue = '';
+            let placeValue = 0;
+            let value = decimal;
+            convertedValue = `${value % numberSystem}`;
+
+            let letter=hexaLetter(value % numberSystem)
+
+            do {
+                value = Math.trunc(value / numberSystem);
+                if (numberSystem === 16) {
+                    convertedValue = `${value % numberSystem}${letter}`;
+                } else {
+                    convertedValue = `${value % numberSystem}${convertedValue}`;
+                };
+                placeValue = placeValue + 1;
+            } while (numberSystem ** (placeValue+1) < decimal+1);
+
+            if (numberSystem === 2) {
+                convertedValue = '0b' + convertedValue;
+            } else if (numberSystem === 8) {
+                convertedValue = '0o' + convertedValue;
+            } else {
+                convertedValue = '0x' + convertedValue;
+            };
+
+            return (convertedValue);
+        }
+
+        const objectOfBinOctaHexaString = {
+            binary: convertStr(number, 2),
+            octal: convertStr(number, 8),
+            hexa: convertStr(number, 16)
+        };
+        console.log(objectOfBinOctaHexaString);
+
+
+        // oktatói megoldás:
+        const converter = (number) => ({
+            binary: number.toString(2),
+            octal: number.toString(8),
+            hexa: number.toString(16),
+        })
+
+        const converter1 = (number) => ({
+            binary: number.toString(2), //itt nem működik a parseInt
+            octal: parseInt(number, 8),
+            hexa: parseInt(number, 16),
+        })
+
+        const converter2 = (number) => ({  // úgy mutatja, ahogy lennie kellene, de 10-es számrendszerbeli szám
+            binary: parseInt(number.toString(2)),
+            octal: parseInt(number.toString(8)),
+            hexa: parseInt(number.toString(16)),
+        })
+        console.log(converter(number));
+        console.log(converter1(number));
+        console.log(converter2(number));
+
+
+    </script>
+</body>
+
+</html>

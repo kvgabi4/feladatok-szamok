@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        'use srtict';
+
+        // Módosítsd úgy a függvényed, hogy paraméterként mind number, mind BigInt típusú adatokat is elfogadjon! 
+        // Amennyiben valamelyik paraméter BigInt, úgy a number-eket is automatikusan konvertálja BigInt-é!
+
+
+
+        const number1 = 1;
+        const number2 = Number.MAX_SAFE_INTEGER;
+        const number3 = 1000;
+        const number4 = -860;
+
+        const ifBigint = (array) => {
+            return array.map(item => array.some(item => typeof item === 'bigint') ? BigInt(item) : item);
+        }
+
+        const sumOfNumbers = (...numbers) => {
+            const sum = ifBigint(numbers).reduce((previousValue, currentValue) => (previousValue || currentValue) > Number.MAX_SAFE_INTEGER ? BigInt(previousValue) + BigInt(currentValue) : (previousValue + currentValue));
+            return `sum: ${sum}, typeof sum: ${typeof sum}`;
+        }
+
+        console.log(sumOfNumbers(number1, number2, number3, number4));
+
+        //oktatói megoldás:
+        const firstLesson = (...numbers) => {
+            let sum = 0;
+            let big = false;
+            for (let i = 0; i < numbers.length; i += 1) {
+                big = typeof numbers[i] === 'bigint' || !Number.isSafeInteger(numbers[i]) || !Number.isSafeInteger(sum)
+                sum = big ? BigInt(sum) : sum;
+                sum += big ? BigInt(numbers[i]) : sum += numbers[i];
+            }
+            console.log(typeof sum, sum);
+            return sum
+        }
+
+        firstLesson(54654654, 2454846548465434643164169546, 5356546);
+
+
+
+    </script>
+</body>
+
+</html>

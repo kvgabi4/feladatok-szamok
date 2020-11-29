@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        'use srtict';
+
+        // Írj egy függvényt, ami a paraméterként kapott tetszőleges darabszámú, 
+        // tetszőlegesen méretű egész számot összead, és visszatér az összeadás végeredményével! 
+        // A paraméterként kapott értékek egyszerű number típusúak legyenek! 
+        // Amennyiben bármelyik paraméter értéke, vagy a részeredmény meghaladja a biztonságos tartományt, 
+        // automatikusan konvertáljad BigIntbe, és így számoljunk tovább, 
+        // és természetesen a visszatérési érték is BigInt legyen!
+
+        const number1 = 1;
+        const number2 = Number.MAX_SAFE_INTEGER;
+        const number3 = 1000;
+        const number4 = -860;
+
+
+        const sumOfNumbers = (...numbers) => {
+            const sum = numbers.reduce((previousValue,currentValue) => (previousValue || currentValue) > Number.MAX_SAFE_INTEGER ? BigInt(previousValue) + BigInt(currentValue) : (previousValue + currentValue));
+            return `sum: ${sum}, typeof sum: ${typeof sum}`;
+        }
+
+        console.log(sumOfNumbers(number1,number2,number3,number4));
+
+        //oktatói megoldás:
+        const firstLesson = (...numbers) => {
+            let sum = 0;
+            let big = false;
+            for (let i=0; i<numbers.length; i+=1) {
+                big = !Number.isSafeInteger(numbers[i]) || !Number.isSafeInteger(sum)
+                // if (big) {
+                //     sum += bigBigInt(numbers[i];)
+                // } 
+                // sum += numbers[i]
+                    sum = big ? BigInt(sum) : sum;
+                    sum += big ? BigInt(numbers[i]) : sum += numbers[i];
+              
+            }
+            console.log(typeof sum, sum);
+            return sum
+        }
+
+        firstLesson(54654654, 2454846548465434643164169546, 5356546);
+        
+    </script>
+</body>
+</html>
